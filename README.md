@@ -6,6 +6,7 @@ Shared dev server of the nikorion TiddlyWiki plugins: `pnpm dev` of every plugin
 
 - Clone this repository next to the plugin repositories (`nikorion/tw-dev/`).
 - In the plugin's `package.json`: `"dev": "node ../tw-dev/dev.cjs"`, with `nodemon` and `tiddlywiki` in its `devDependencies`.
+- In the dev wiki, `$:/config/SyncFilter` must exclude `-[prefix[$:/plugins/nikorion/]]`: pushed tiddlers override shadows in the browser only, and without this filter the browser would save them to disk, masking the plugin's shadows for good. Every nikorion plugin, not just the wiki's own: sibling plugins are pushed too.
 - Nothing else: no `scripts/`, no `nodemon.json`, no `$:/dev/hmr` tiddler in the dev wiki.
 
 ## What it does

@@ -119,7 +119,9 @@ function writeSessionPlugin(ssePort) {
     ],
     { stdio: "inherit", env }
   );
-  const hmr = spawn(process.execPath, [path.join(__dirname, "dev-hmr.cjs")], {
+  // The project path is passed only to show in the process command line, so a
+  // leftover dev-hmr (still holding the SSE port) can be found by project name.
+  const hmr = spawn(process.execPath, [path.join(__dirname, "dev-hmr.cjs"), PROJECT], {
     stdio: "inherit",
     env,
   });

@@ -1,0 +1,19 @@
+{
+  "description": "nikorion plugin library: every nikorion plugin, subscribable from TiddlyWiki's plugin manager",
+  "plugins": [
+    "tiddlywiki/pluginlibrary"
+  ],
+  "themes": [
+    "tiddlywiki/vanilla",
+    "tiddlywiki/snowwhite"
+  ],
+  "build": {
+    "library": [
+      "--output", "docs/library",
+      "--makelibrary", "$:/UpgradeLibrary",
+      "--savelibrarytiddlers", "$:/UpgradeLibrary", "[prefix[$:/plugins/nikorion/]] -[[$:/plugins/nikorion/detect-language]] -[[$:/plugins/nikorion/tw-dev]]", "recipes/library/tiddlers/", "$:/UpgradeLibrary/List",
+      "--savetiddler", "$:/UpgradeLibrary/List", "recipes/library/tiddlers.json",
+      "--rendertiddler", "$:/plugins/tiddlywiki/pluginlibrary/library.template.html", "index.html", "text/plain"
+    ]
+  }
+}

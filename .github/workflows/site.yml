@@ -1,0 +1,59 @@
+name: Build and publish a plugin (shared)
+
+# Reusable workflow called by every nikorion plugin repository:
+#   lint (if the plugin has a lint script) → `pnpm build` (dist/ plugin JSON +
+#   docs/ demo wiki) → on demand, publish docs/ to the repository's GitHub Pages.
+# The nikorion plugins the dev wiki loads are resolved by ci-plugins.cjs.
+
+on:
+  workflow_call:
+    inputs:
+      deploy:
+        description: Publish docs/ to GitHub Pages
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: nikorion/tw-dev
+          path: .tw-dev
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: node .tw-dev/ci-plugins.cjs wiki
+
+      - run: pnpm run --if-present lint
+
+      - run: pnpm build
+
+      - if: inputs.deploy
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    if: inputs.deploy
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

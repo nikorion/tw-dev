@@ -18,3 +18,11 @@ Shared dev server of the nikorion TiddlyWiki plugins: `pnpm dev` of every plugin
 - **Browser half**: `plugin/` is copied to `.state/<project>/plugin/` with the SSE port tiddler, and loaded for the session only with `tiddlywiki ++<folder>`. It is never written to the wiki's `tiddlers/` and never part of `tiddlywiki wiki --build`.
 
 How the HMR works and why: `../guides/hmr-tiddlywiki.md`.
+
+## Publishing (CI)
+
+- **`.github/workflows/site.yml`**: reusable workflow every plugin repository calls from its `.github/workflows/ci.yml`: lint (if any), `pnpm build` (plugin JSON + demo wiki in `docs/`), then publish `docs/` to that repository's GitHub Pages (`https://nikorion.github.io/<repo>/`).
+- **`ci-plugins.cjs`**: rebuilds `TIDDLYWIKI_PLUGIN_PATH` on the CI runner: links the repository's own `src/<name>/`, clones the other nikorion plugins the wiki loads from GitHub. `plugins.json` maps each short name to its repository: add every new plugin there.
+- **`.github/workflows/library.yml`** + **`library/`**: the nikorion plugin library, every plugin of `plugins.json` (except `detect-language`), published to `https://nikorion.github.io/tw-dev/library/index.html`. Rebuilt on every push here, every night, and on demand (Actions → Run workflow).
+
+Details: `../guides/publication.md`.

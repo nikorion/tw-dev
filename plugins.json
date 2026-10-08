@@ -1,0 +1,14 @@
+{
+  "chart": "TW-Chart",
+  "detect-language": "TW-Detect-Language",
+  "dyntable": "TW-Dynamic-Table",
+  "fonts": "TW-Fonts",
+  "hover-tilt": "TW-Hover-Tilt",
+  "math": "TW-Math",
+  "pkm-fields": "TW-PKM-Fields",
+  "pkm-schema": "TW-PKM-Schema",
+  "plugin-info-tree": "TW-Plugin-Info-Tree",
+  "scroll-layout": "TW-Scroll-Layout",
+  "table": "TW-Table",
+  "tiny-bootstrap": "TW-Tiny-Bootstrap"
+}

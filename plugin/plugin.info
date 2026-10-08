@@ -1,0 +1,9 @@
+{
+  "title": "$:/plugins/nikorion/tw-dev",
+  "name": "tw-dev",
+  "description": "Dev-session content HMR (loaded by tw-dev/dev.cjs only, never built)",
+  "author": "nikorion",
+  "version": "1.0.0",
+  "plugin-type": "plugin",
+  "core-version": ">=5.3.0"
+}

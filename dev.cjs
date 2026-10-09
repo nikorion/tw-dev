@@ -26,6 +26,7 @@ const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
 const { sourceDirs } = require("./watch-dirs.cjs");
+const { buildPluginPath } = require("./plugin-path.cjs");
 
 const PROJECT = process.cwd();
 const STATE = path.join(__dirname, ".state", path.basename(PROJECT));
@@ -96,6 +97,11 @@ function writeSessionPlugin(ssePort) {
   fs.writeFileSync(PORTS_FILE, JSON.stringify({ tw: twPort, sse: ssePort }) + "\n");
 
   const pluginDir = writeSessionPlugin(ssePort);
+  // The nikorion plugins this wiki loads, resolved without any machine setup
+  // (plugin-path.cjs); an existing TIDDLYWIKI_PLUGIN_PATH still works, after it.
+  process.env.TIDDLYWIKI_PLUGIN_PATH = [buildPluginPath(PROJECT, STATE), process.env.TIDDLYWIKI_PLUGIN_PATH]
+    .filter(Boolean)
+    .join(path.delimiter);
   const watchDirs = sourceDirs(PROJECT);
   const env = {
     ...process.env,

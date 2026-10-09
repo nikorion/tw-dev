@@ -1,6 +1,6 @@
 {
   "chart": "TW-Chart",
-  "detect-language": "TW-Detect-Language",
+  "detect-language": "tw-detect-language",
   "dyntable": "TW-Dynamic-Table",
   "fonts": "TW-Fonts",
   "hover-tilt": "TW-Hover-Tilt",

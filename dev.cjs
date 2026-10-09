@@ -112,6 +112,9 @@ function writeSessionPlugin(ssePort) {
   process.stdout.write(`[dev] TiddlyWiki → http://localhost:${twPort}  (HMR SSE :${ssePort})\n`);
 
   // Reboot TW on a module or plugin.info change anywhere in the loaded sources.
+  // --config points at the empty nodemon.json of tw-dev, so nodemon ignores any
+  // nodemon.json or package.json "nodemonConfig" left in the plugin project: the
+  // watch list and extensions below are the only settings that apply.
   const watchArgs = watchDirs.flatMap((dir) => ["--watch", dir]);
   const nodemonBin = require.resolve("nodemon/bin/nodemon.js", { paths: [PROJECT] });
   const nodemon = spawn(

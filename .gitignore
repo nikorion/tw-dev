@@ -1,5 +1,3 @@
 # Per-project session state (ports, generated session plugin)
 .state/
 
-# Built plugin library (published by CI, never committed)
-docs/

@@ -2,7 +2,7 @@
   "chart": "TW-Chart",
   "detect-language": "tw-detect-language",
   "dyntable": "TW-Dynamic-Table",
-  "fonts": "TW-Fonts",
+  "font-manager": "TW-Font-Manager",
   "hover-tilt": "TW-Hover-Tilt",
   "math": "TW-Math",
   "pkm-fields": "TW-PKM-Fields",

@@ -252,6 +252,9 @@ const pending = new Set(); // absolute paths, deduped across both watch roots
 // whose file still has the same content is ignored. A deleted file (no content)
 // always counts as a change.
 const crypto = require("crypto");
+const prefs = require("./prefs-sync.cjs");
+prefs.init(path.resolve("wiki"));
+const OWN_SYSTEM = path.resolve("wiki/tiddlers/system").toLowerCase() + path.sep;
 const knownHashes = new Map(); // absolute path → sha1 of its content
 function hashOf(abs) {
   try {
@@ -291,6 +294,15 @@ for (const dir of WATCH_DIRS) {
     if (IGNORED_BASENAME.test(path.basename(filename))) return;
     const abs = path.join(dir, filename);
     if (!contentChanged(abs)) return;
+    // Interface preferences set in this wiki are copied to every other dev wiki
+    // (tw-dev/prefs.json lists them; see prefs-sync.cjs).
+    if (abs.toLowerCase().startsWith(OWN_SYSTEM)) {
+      try {
+        prefs.onChange(abs, (line) => process.stdout.write(line + "\n"));
+      } catch (err) {
+        process.stderr.write(`[prefs] sync failed for ${abs}: ${err.message}\n`);
+      }
+    }
     pending.add(abs);
     clearTimeout(debounce);
     debounce = setTimeout(flush, 100);

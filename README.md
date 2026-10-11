@@ -20,6 +20,13 @@ Shared dev server of the nikorion TiddlyWiki plugins: `pnpm dev` of every plugin
 
 How the HMR works and why: `../guides/hmr-tiddlywiki.md`.
 
+## Shared interface preferences
+
+A preference set through the UI of one dev wiki (palette, layout, sizes…) is copied, as the same file, to `wiki/tiddlers/system/` of every other dev wiki of the workspace, so all wikis and their published demos share it. Which tiddlers count is listed in `prefs.json` (exact titles + title prefixes, and wikis to leave out).
+
+- **Live**: `dev-hmr.cjs` hands each real change under its wiki's `system/` folder to `prefs-sync.cjs`; the other wikis' running servers push the new file to their browsers. Deleting a preference file deletes it everywhere.
+- **One-shot**: `node ../tw-dev/prefs-sync.cjs` makes all wikis agree on the most recently modified version of each preference; `--check` only reports.
+
 ## Publishing (CI)
 
 - **`.github/workflows/site.yml`**: reusable workflow every plugin repository calls from its `.github/workflows/ci.yml`: lint (if any), `pnpm build` (plugin JSON + demo wiki in `docs/`), then publish `docs/` to that repository's GitHub Pages (`https://nikorion.github.io/<repo>/`).

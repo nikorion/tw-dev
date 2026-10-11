@@ -1,0 +1,16 @@
+{
+  "titles": [
+    "$:/palette",
+    "$:/theme",
+    "$:/layout",
+    "$:/view",
+    "$:/config/AnimationDuration",
+    "$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/fold-all",
+    "$:/config/ViewToolbarButtons/Visibility/$:/core/ui/Buttons/fold"
+  ],
+  "prefixes": [
+    "$:/themes/tiddlywiki/vanilla/options/",
+    "$:/themes/tiddlywiki/vanilla/metrics/"
+  ],
+  "exclude": ["Modern.TiddlyDev"]
+}

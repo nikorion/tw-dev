@@ -14,7 +14,6 @@
   ],
   "exclude": [
     "Modern.TiddlyDev",
-    "TW-Theme",
-    "TW-Palette"
+    "TW-Theme"
   ]
 }

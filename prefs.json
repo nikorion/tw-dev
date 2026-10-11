@@ -6,7 +6,8 @@
     "$:/view",
     "$:/config/AnimationDuration",
     "$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/fold-all",
-    "$:/config/ViewToolbarButtons/Visibility/$:/core/ui/Buttons/fold"
+    "$:/config/ViewToolbarButtons/Visibility/$:/core/ui/Buttons/fold",
+    "$:/plugins/wikilabs/link-to-tabs/config"
   ],
   "prefixes": [
     "$:/themes/tiddlywiki/vanilla/options/",

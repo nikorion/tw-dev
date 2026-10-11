@@ -24,6 +24,6 @@ How the HMR works and why: `../guides/hmr-tiddlywiki.md`.
 
 - **`.github/workflows/site.yml`**: reusable workflow every plugin repository calls from its `.github/workflows/ci.yml`: lint (if any), `pnpm build` (plugin JSON + demo wiki in `docs/`), then publish `docs/` to that repository's GitHub Pages (`https://nikorion.github.io/<repo>/`).
 - **`ci-plugins.cjs`**: rebuilds `TIDDLYWIKI_PLUGIN_PATH` on the CI runner: links the repository's own `src/<name>/`, clones the other nikorion plugins the wiki loads from GitHub. `plugins.json` maps each short name to its repository: add every new plugin there (it then also enters the plugin library).
-- The nikorion plugin library lives in its own repository, [tw-plugins](https://github.com/nikorion/tw-plugins), which reads `plugins.json` and `ci-plugins.cjs` from here.
+- The nikorion plugin library lives in its own repository, [TW-Plugin-Library](https://github.com/nikorion/TW-Plugin-Library), which reads `plugins.json` and `ci-plugins.cjs` from here.
 
 Details: `../guides/publication.md`.

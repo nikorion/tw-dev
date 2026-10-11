@@ -109,6 +109,8 @@ function scan(wikiDir) {
 // Called with the absolute path of a file whose content really changed (or that
 // was deleted) under <wikiDir>/wiki/tiddlers/system/.
 function onChange(abs, log) {
+  // A wiki listed in `exclude` neither gives nor receives preferences.
+  if (CONFIG.exclude.includes(path.basename(path.resolve(abs, "..", "..", "..", "..")))) return;
   const base = path.basename(abs);
   if (!base.endsWith(".tid")) return;
   if (!fs.existsSync(abs)) {

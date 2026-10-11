@@ -12,5 +12,5 @@
     "$:/themes/tiddlywiki/vanilla/options/",
     "$:/themes/tiddlywiki/vanilla/metrics/"
   ],
-  "exclude": ["Modern.TiddlyDev"]
+  "exclude": ["Modern.TiddlyDev", "TW-Theme"]
 }

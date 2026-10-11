@@ -253,6 +253,19 @@ const pending = new Set(); // absolute paths, deduped across both watch roots
 // always counts as a change.
 const crypto = require("crypto");
 const prefs = require("./prefs-sync.cjs");
+// Write-back of browser edits into the plugin sources, for projects that opt in with
+// "twDev": { "writeBack": "src/<name>" } in package.json (see writeback.cjs).
+let writeBack = null;
+try {
+  const pkg = JSON.parse(fs.readFileSync(path.resolve("package.json"), "utf8"));
+  if (pkg.twDev && pkg.twDev.writeBack) {
+    writeBack = require("./writeback.cjs").create(process.cwd(), pkg.twDev.writeBack, (l) =>
+      process.stdout.write(l + "\n")
+    );
+  }
+} catch (err) {
+  process.stderr.write(`[writeback] disabled: ${err.message}\n`);
+}
 prefs.init(path.resolve("wiki"));
 const OWN_SYSTEM = path.resolve("wiki/tiddlers/system").toLowerCase() + path.sep;
 const knownHashes = new Map(); // absolute path → sha1 of its content
@@ -301,6 +314,15 @@ for (const dir of WATCH_DIRS) {
         prefs.onChange(abs, (line) => process.stdout.write(line + "\n"));
       } catch (err) {
         process.stderr.write(`[prefs] sync failed for ${abs}: ${err.message}\n`);
+      }
+    }
+    if (writeBack) {
+      try {
+        // Folded back into the plugin: the source watcher pushes the result, and the
+        // wiki file is gone (its deletion event is handled as usual).
+        writeBack.onFile(abs);
+      } catch (err) {
+        process.stderr.write(`[writeback] failed for ${abs}: ${err.message}\n`);
       }
     }
     pending.add(abs);

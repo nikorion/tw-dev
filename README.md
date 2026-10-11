@@ -27,6 +27,10 @@ A preference set through the UI of one dev wiki (palette, layout, sizes…) is c
 - **Live**: `dev-hmr.cjs` hands each real change under its wiki's `system/` folder to `prefs-sync.cjs`; the other wikis' running servers push the new file to their browsers. Deleting a preference file deletes it everywhere.
 - **One-shot**: `node ../tw-dev/prefs-sync.cjs` makes all wikis agree on the most recently modified version of each preference; `--check` only reports.
 
+## Write-back to the plugin sources
+
+A project can opt in with `"twDev": { "writeBack": "src/<name>" }` in its `package.json` (used by TW-Theme). Each tiddler the browser then saves under `wiki/tiddlers/` whose title is shipped by that plugin folder is copied back into it by `writeback.cjs` (body of a `.tid` file, or a `key: value` line of a `.multids`; a new key under a prefix a `.multids` owns is appended), and the saved file is removed so the plugin's shadow tiddler takes over. Titles unknown to the plugin stay in the wiki. The wiki's `$:/config/SyncFilter` must let those titles through.
+
 ## Publishing (CI)
 
 - **`.github/workflows/site.yml`**: reusable workflow every plugin repository calls from its `.github/workflows/ci.yml`: lint (if any), `pnpm build` (plugin JSON + demo wiki in `docs/`), then publish `docs/` to that repository's GitHub Pages (`https://nikorion.github.io/<repo>/`).

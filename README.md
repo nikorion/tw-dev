@@ -29,7 +29,7 @@ A preference set through the UI of one dev wiki (palette, layout, sizes…) is c
 
 ## Write-back to the plugin sources
 
-A project can opt in with `"twDev": { "writeBack": "src/<name>" }` in its `package.json` (used by TW-Theme). Each tiddler the browser then saves under `wiki/tiddlers/` whose title is shipped by that plugin folder is copied back into it by `writeback.cjs` (body of a `.tid` file, or a `key: value` line of a `.multids`; a new key under a prefix a `.multids` owns is appended), and the saved file is removed so the plugin's shadow tiddler takes over. Titles unknown to the plugin stay in the wiki. The wiki's `$:/config/SyncFilter` must let those titles through.
+A project can opt in with `"twDev": { "writeBack": "src/<name>" }` in its `package.json` (used by TW-Theme), meaning: in that dev wiki, whatever is created or edited from the web interface is part of the plugin. `writeback.cjs` copies each tiddler the browser saves under `wiki/tiddlers/` into the plugin folder (updates the file that ships that title; a new title goes to `styles/`, `images/`, `overrides/` or a `.multids` that owns its prefix), then removes the saved file. Drafts, session state and the wiki's own files that existed at start are left alone. The wiki's `$:/config/SyncFilter` must let those titles through.
 
 ## Publishing (CI)
 

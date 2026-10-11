@@ -1,5 +1,7 @@
 # tw-dev
 
+![Status](https://img.shields.io/badge/status-experimental-orange)
+
 Shared dev server of the nikorion TiddlyWiki plugins: `pnpm dev` of every plugin repository runs this tool instead of carrying its own copy.
 
 ## Use it in a plugin

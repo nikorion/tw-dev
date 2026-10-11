@@ -147,7 +147,8 @@ function serialise(fields, text) {
 }
 
 // `config` is the "writeBack" value of package.json: a folder, or
-// { "dirs": [folders searched for the shipped titles], "default": folder for new ones }.
+// { "dirs": [folders searched for the shipped titles], "default": folder for new ones,
+//   "createNew": false to leave titles unknown to those folders in the wiki }.
 function create(projectDir, config, log) {
   const cfg = typeof config === "string" ? { dirs: [config], default: config } : config;
   const dirs = cfg.dirs.map((d) => path.resolve(projectDir, d));
@@ -196,7 +197,11 @@ function create(projectDir, config, log) {
     const { title } = saved.fields;
     if (saved.binary) return index.titles.has(title) ? "same" : createNew(saved, index);
     const hit = index.titles.get(title);
-    if (!hit) return createNew(saved, index);
+    if (!hit) {
+      const owned = index.prefixes.some((x) => title.startsWith(x.prefix));
+      if (cfg.createNew === false && !owned) return null; // unknown title: stays in the wiki
+      return createNew(saved, index);
+    }
     if (hit.kind === "tid") {
       const { head, body } = splitTid(fs.readFileSync(hit.file, "utf8"));
       if (body.replace(/\n+$/, "") === saved.text.replace(/\n+$/, "")) return "same";

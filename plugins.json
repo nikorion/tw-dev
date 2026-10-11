@@ -8,7 +8,7 @@
   "pkm-fields": "TW-PKM-Fields",
   "pkm-schema": "TW-PKM-Schema",
   "plugin-info-tree": "TW-Plugin-Info-Tree",
-  "layout": "TW-Layout",
+  "scroll-layout": "TW-Scroll-Layout",
   "table": "TW-Table",
   "tiny-bootstrap": "TW-Tiny-Bootstrap"
 }

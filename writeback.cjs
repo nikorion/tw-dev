@@ -6,7 +6,7 @@
 // created or edited through the web interface is considered part of it.
 //
 // Enabled per project by "twDev": { "writeBack": "src/<name>" } in package.json
-// (see TW-Theme). dev-hmr.cjs calls onFile() on every real content change under
+// (see TW-PKM-Theme). dev-hmr.cjs calls onFile() on every real content change under
 // wiki/tiddlers/.
 //
 // Where a saved tiddler goes, by title:

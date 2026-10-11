@@ -28,7 +28,16 @@ function locate(projectDir, name) {
   const own = path.join(projectDir, "src", name);
   if (hasPlugin(own)) return { dir: own, from: "project" };
   const repo = REPOS[name];
-  if (!repo) return null;
+  if (!repo) {
+    // Not published (absent from plugins.json): a sibling TW-* project of the workspace,
+    // found by convention, never cloned.
+    const parent = path.join(projectDir, "..");
+    for (const entry of fs.readdirSync(parent)) {
+      const dir = path.join(parent, entry, "src", name);
+      if (/^TW-/.test(entry) && hasPlugin(dir)) return { dir, from: "sibling" };
+    }
+    return null;
+  }
   const sibling = path.join(projectDir, "..", repo, "src", name);
   if (hasPlugin(sibling)) return { dir: sibling, from: "sibling" };
   const clone = path.join(CACHE, repo);

@@ -67,12 +67,16 @@ function walk(dir, out) {
 
 // title → { kind: "tid"|"multids", file, key? } for every tiddler the plugin ships,
 // plus the prefixes owned by its .multids files.
-function buildIndex(pluginDir) {
+function buildIndex(pluginDirs) {
   const titles = new Map();
   const prefixes = []; // { prefix, file }
-  for (const file of walk(pluginDir, [])) {
-    const rel = path.relative(pluginDir, file);
-    if (rel.split(path.sep)[0] === "language") continue;
+  const files = [];
+  for (const d of pluginDirs) {
+    for (const file of walk(d, [])) {
+      if (path.relative(d, file).split(path.sep)[0] !== "language") files.push(file);
+    }
+  }
+  for (const file of files) {
     if (file.endsWith(".tid")) {
       const { head } = splitTid(fs.readFileSync(file, "utf8"));
       const f = parseFields(head);
@@ -142,8 +146,12 @@ function serialise(fields, text) {
   return lines.join("\n") + "\n\n" + text.replace(/\n+$/, "") + "\n";
 }
 
-function create(projectDir, pluginRel, log) {
-  const pluginDir = path.resolve(projectDir, pluginRel);
+// `config` is the "writeBack" value of package.json: a folder, or
+// { "dirs": [folders searched for the shipped titles], "default": folder for new ones }.
+function create(projectDir, config, log) {
+  const cfg = typeof config === "string" ? { dirs: [config], default: config } : config;
+  const dirs = cfg.dirs.map((d) => path.resolve(projectDir, d));
+  const pluginDir = path.resolve(projectDir, cfg.default || cfg.dirs[0]);
   const wikiDir = path.resolve(projectDir, "wiki", "tiddlers");
   const inWiki = (abs) => path.resolve(abs).toLowerCase().startsWith(wikiDir.toLowerCase() + path.sep);
   // The wiki's own content: files that exist before anything is saved.
@@ -234,7 +242,7 @@ function create(projectDir, pluginRel, log) {
       const { title } = saved.fields;
       if (saved.fields["draft.of"] || TRANSIENT.some((r) => r.test(title))) return false;
       if (owned.has(title)) return false; // the wiki's own content stays in the wiki
-      const index = buildIndex(pluginDir);
+      const index = buildIndex(dirs);
       let target;
       try {
         target = apply(saved, index);

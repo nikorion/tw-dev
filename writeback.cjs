@@ -255,6 +255,7 @@ function create(projectDir, config, log) {
         log(`[writeback] ${title}: ${err.message} — kept in the wiki`);
         return false;
       }
+      if (target === null) return false; // not ours: the saved file stays in the wiki
       for (const f of saved.files) fs.rmSync(f, { force: true });
       if (target !== "same") log(`[writeback] ${title} → ${target}`);
       return true;
